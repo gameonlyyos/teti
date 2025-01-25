@@ -17,6 +17,18 @@ client = MongoClient(MONGODB_URI)
 db = client.user_database
 users_collection = db.users
 
+# Route akar untuk konfirmasi API aktif
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "message": "API is running",
+        "endpoints": {
+            "create_user": "/users (POST)",
+            "get_users": "/users (GET)",
+            "get_user_by_id": "/users/<user_id> (GET)"
+        }
+    }), 200
+
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.json
