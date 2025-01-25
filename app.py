@@ -22,11 +22,7 @@ if not MONGODB_URI:
 
 try:
     print("Attempting to connect to MongoDB...")
-    client = MongoClient(
-        MONGODB_URI.strip(),
-        serverSelectionTimeoutMS=5000,
-        tlsAllowInvalidCertificates=True  # Menggunakan tls instead of ssl
-    )
+    client = MongoClient(MONGODB_URI.strip())
     # Test the connection
     client.admin.command('ping')
     print("Successfully connected to MongoDB!")
