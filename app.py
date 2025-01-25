@@ -13,9 +13,19 @@ CORS(app)
 
 # Koneksi MongoDB
 MONGODB_URI = os.getenv('MONGODB_URI')
-client = MongoClient(MONGODB_URI)
-db = client.user_database
-users_collection = db.users
+if not MONGODB_URI:
+    raise ValueError("MONGODB_URI environment variable is not set")
+
+try:
+    client = MongoClient(MONGODB_URI)
+    # Test the connection
+    client.admin.command('ping')
+    print("Successfully connected to MongoDB!")
+    db = client.user_database
+    users_collection = db.users
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+    raise
 
 # Route akar untuk konfirmasi API aktif
 @app.route('/', methods=['GET'])
