@@ -12,10 +12,12 @@ app = Flask(__name__)
 CORS(app)
 
 # Koneksi MongoDB
+print("Available environment variables:", os.environ.keys())
 MONGODB_URI = os.getenv('MONGODB_URI')
 print(f"Debug - MONGODB_URI value: {MONGODB_URI}")
 
 if not MONGODB_URI:
+    print("Error: MONGODB_URI is not set. Please check Railway variables configuration.")
     raise ValueError("MONGODB_URI environment variable is not set")
 
 try:
@@ -23,8 +25,7 @@ try:
     client = MongoClient(
         MONGODB_URI.strip(),
         serverSelectionTimeoutMS=5000,
-        ssl=True,
-        ssl_cert_reqs='CERT_NONE'  # Untuk mengatasi masalah SSL
+        tlsAllowInvalidCertificates=True  # Menggunakan tls instead of ssl
     )
     # Test the connection
     client.admin.command('ping')
